@@ -1,6 +1,7 @@
 import numpy as np
 from scipy.signal import convolve2d
 from .interfaces.iboard import IBoard
+from .board_revealer import SingleCellBoardRevealer
 
 
 class Board(IBoard):
@@ -10,6 +11,7 @@ class Board(IBoard):
         self.mines = mines
         self._board = self.generate(width, height, mines)
         self._mask = np.zeros_like(self._board, dtype=bool)
+        self._revealer = SingleCellBoardRevealer(self)
 
     def generate(self, width, height, mines):
         board = np.zeros((height, width), dtype=int)
@@ -43,5 +45,13 @@ class Board(IBoard):
         non_mine_cells = board != -1
         board[non_mine_cells] += adjacent_mines[non_mine_cells]
 
+    def reveal_cell(self, x, y):
+        if 0 <= x < self.width and 0 <= y < self.height:
+            self._mask[y, x] = True
+            return self._board[y, x]
+        else:
+            # Coordinates are out of bounds, raise an exception
+            raise IndexError(f"Coordinates ({x}, {y}) are out of board boundaries.")
+
     def reveal(self, x, y):
-        pass
+        return self._revealer.reveal(x, y)
