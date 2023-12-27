@@ -32,6 +32,29 @@ class TestBoard(unittest.TestCase):
                 if _small_board[y, x] != -1:  # not a mine
                     self.assertEqual(_small_board[x, y], expected_counts[x, y])
 
+    def test_reveal_cell_within_bounds(self):
+        x, y = 2, 2
+        expected_value = self.board._board[y, x]
+        result = self.board.reveal_cell(x, y)
+        self.assertEqual(
+            result,
+            expected_value,
+            "The revealed cell value should match the expected value.",
+        )
+        self.assertTrue(
+            self.board._mask[y, x], "The cell should be marked as revealed."
+        )
+
+    def test_reveal_cell_out_of_bounds(self):
+        x, y = self.width, self.height
+        with self.assertRaises(IndexError) as context:
+            self.board.reveal_cell(x, y)
+        self.assertIn(
+            f"Coordinates ({x}, {y})",
+            str(context.exception),
+            "IndexError should contain the out-of-bounds coordinates.",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
