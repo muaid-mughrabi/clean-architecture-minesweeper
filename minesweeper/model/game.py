@@ -33,7 +33,7 @@ class Game(IGame):
     def reveal(self, x, y):
         if self.game_over:
             return
-        result = self.board.reveal_cell(x, y)
+        result = self.board.reveal(x, y)
         if result == MINE_VALUE:  # Hit a mine
             self.game_over = True
             self.win = False
