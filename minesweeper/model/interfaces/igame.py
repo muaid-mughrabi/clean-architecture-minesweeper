@@ -7,7 +7,7 @@ class IGame(ABC):
         pass
 
     @abstractmethod
-    def restart(self):
+    def start(self):
         pass
 
     @abstractmethod
