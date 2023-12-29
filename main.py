@@ -1,4 +1,4 @@
-from minesweeper.model.board import Board
+from minesweeper.model.game import Game
 
-b = Board()
-print(b._board)
+g = Game(4, 10, 2)
+print(g.board.board)
